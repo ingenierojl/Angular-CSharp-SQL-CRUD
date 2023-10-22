@@ -1,0 +1,34 @@
+<div class="form">
+  <h2>Reportar daño</h2>
+  
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="titulo">Título:</label>
+      <input type="text" class="form-control" id="titulo" name="titulo" [(ngModel)]="danoData.titulo">
+    </div>
+  
+    <div class="form-group">
+      <label for="descripcion">Descripción:</label>
+      <textarea class="form-control" id="descripcion" name="descripcion" [(ngModel)]="danoData.descripcion"></textarea>
+    </div>
+  
+    <div class="form-group">
+      <label for="fecha">Fecha:</label>
+      <input type="date" class="form-control" id="fecha" name="fecha" [(ngModel)]="danoData.fecha">
+    </div>
+  
+    <div class="form-group">
+      <label for="estado">Estado:</label>
+      <select class="form-control" id="estado" name="estado" [(ngModel)]="danoData.estado">
+        <option value="reportado">Reportado</option>
+        <option value="validado">Validado</option>
+        <option value="en proceso">En Proceso</option>  
+        <option value="cerrado">Cerrado</option>
+      </select>
+    </div>
+  
+    <div class="form-group">
+      <button type="submit">Reportar Daño</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,33 @@
+<div class="report-list">
+
+  <h2>Listado de Reportes de Daño</h2>
+
+  <table class="table">
+
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+
+      <tr *ngFor="let reporte of reportes">
+        <td>{{reporte.titulo}}</td>
+        <td>{{reporte.descripcion}}</td>
+        <td>{{reporte.fecha | date:'short'}}</td>
+        <td>{{reporte.estado}}</td>
+        <td>
+          <button class="btn btn-info">Ver Detalles</button>
+        </td>
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>

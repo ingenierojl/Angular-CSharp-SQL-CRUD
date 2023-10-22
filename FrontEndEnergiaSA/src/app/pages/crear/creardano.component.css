@@ -1,0 +1,42 @@
+/* Estilo para el formulario */
+.form {
+    width: 300px; /* Ancho del formulario, ajústalo según tus necesidades */
+    margin: 0 auto; /* Centra el formulario horizontalmente */
+    padding: 20px; /* Espacio interno dentro del formulario */
+    border: 1px solid #ccc; /* Borde alrededor del formulario */
+    border-radius: 5px; /* Bordes redondeados */
+    background-color: #f9f9f9; /* Color de fondo del formulario */
+  }
+  
+  /* Estilo para el título del formulario */
+  .form h2 {
+    text-align: center; /* Centra el texto del título */
+    margin-bottom: 20px; /* Espacio inferior para el título */
+  }
+  
+  /* Estilo para los grupos de formulario (label + input/textarea/select) */
+  .form .form-group {
+    margin: 10px 0; /* Espacio entre grupos de formulario */
+  }
+  
+  /* Estilo para las etiquetas de los campos */
+  .form label {
+    display: block; /* Muestra las etiquetas en una línea nueva */
+    font-weight: bold; /* Estilo de fuente en negrita */
+  }
+  
+  /* Estilo para los campos de entrada (input, textarea, select) */
+  .form .form-control {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    padding: 5px; /* Espacio interno dentro de los campos */
+    border: 1px solid #ccc; /* Borde alrededor de los campos */
+    border-radius: 3px; /* Bordes redondeados */
+  }
+  
+  /* Estilo para el botón */
+  .form button.btn-primary {
+    display: block; /* Muestra el botón en una línea nueva */
+    margin-top: 20px; /* Espacio superior para el botón */
+    width: 100%; /* Ocupa todo el ancho disponible */
+  }
+  

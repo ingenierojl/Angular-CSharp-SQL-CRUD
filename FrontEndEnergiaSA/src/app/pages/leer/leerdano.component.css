@@ -1,0 +1,50 @@
+/* Estilo para el contenedor del listado de reportes */
+.report-list {
+    margin: 20px;
+  }
+  
+  /* Estilo para el título */
+  .report-list h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo para la tabla */
+  .report-list table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Estilo para las filas de encabezado */
+  .report-list thead th {
+    background-color: #007bff; /* Color de fondo del encabezado */
+    color: #fff; /* Color del texto en el encabezado */
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+  }
+  
+  /* Estilo para las filas de datos */
+  .report-list tbody td {
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Estilo para el botón de "Ver Detalles" */
+  .report-list button.btn-info {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  /* Estilo para el botón al pasar el cursor sobre él */
+  .report-list button.btn-info:hover {
+    background-color: #0056b3;
+  }
+  

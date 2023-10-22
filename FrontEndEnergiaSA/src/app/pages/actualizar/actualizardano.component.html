@@ -1,0 +1,40 @@
+<div class="report-list">
+  <h2>Actualizar Reporte de Daño</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reporte of reportes">
+        <td>
+          <input type="text" [(ngModel)]="reporte.titulo" name="titulo">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="reporte.descripcion" name="descripcion">
+        </td>
+        <td>
+          <input type="date" [(ngModel)]="reporte.fecha" name="fecha">
+          
+        </td>
+        <td>
+          <select class="form-control" [(ngModel)]="reporte.estado" name="estado">
+            <option value="reportado">Reportado</option>
+            <option value="validado">Validado</option>
+            <option value="en proceso">En Proceso</option>
+            <option value="cerrado">Cerrado</option>
+          </select>
+        </td>
+        
+        <td>
+          <button class="btn btn-info" (click)="verCambios(reporte)">Actualizar Daños</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
