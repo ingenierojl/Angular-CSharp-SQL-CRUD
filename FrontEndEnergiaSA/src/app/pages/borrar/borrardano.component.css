@@ -1,40 +1,41 @@
-.damage-list {
-    padding: 20px;
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-  }
-  
-  .damage-list h2 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-  }
-  
-  .damage-list ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .damage-list li {
-    margin-bottom: 10px;
-  }
-  
-  .damage-list label {
-    display: inline-block;
-    margin-left: 10px;
-    font-size: 1.1rem;
-  }
-  
-  .damage-list button {
-    margin-top: 15px;
-    padding: 10px 20px;
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .damage-list button:hover {
-    background-color: #c82333;
-  }
-  
+.report-list {
+  margin: 20px;
+}
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+th {
+  background-color: #f0f0f0;
+}
+
+input[type="text"] {
+  width: 80%; /* Ajusta el ancho aquí según tus necesidades */
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}

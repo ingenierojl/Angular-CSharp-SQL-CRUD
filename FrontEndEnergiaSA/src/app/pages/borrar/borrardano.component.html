@@ -1,18 +1,40 @@
-<div class="damage-list">
-    <h2>Listado de Daños</h2>
-    <ul>
-      <li>
-        <input type="radio" id="damage1" name="damage" value="damage1">
-        <label for="damage1">Daño 1 - Título 1</label>
-      </li>
-      <li>
-        <input type="radio" id="damage2" name="damage" value="damage2">
-        <label for="damage2">Daño 2 - Título 2</label>
-      </li>
-      <!-- Agrega más elementos de lista según la cantidad de daños -->
-    </ul>
-    <button class="btn btn-danger">
-      Eliminar Daño Seleccionado
-    </button>
-  </div>
-  
+<div class="report-list">
+  <h2>Eliminar Daños</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let reporte of reportes">
+        <td>
+          <input type="text" [(ngModel)]="reporte.titulo" name="titulo">
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="reporte.descripcion" name="descripcion">
+        </td>
+        <td>
+          <input type="date" [(ngModel)]="reporte.fecha" name="fecha">
+          
+        </td>
+        <td>
+          <select class="form-control" [(ngModel)]="reporte.estado" name="estado">
+            <option value="reportado">Reportado</option>
+            <option value="validado">Validado</option>
+            <option value="en proceso">En Proceso</option>
+            <option value="cerrado">Cerrado</option>
+          </select>
+        </td>
+        
+        <td>
+          <button class="btn btn-info" (click)="verCambios(reporte)">Borrar Daño</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

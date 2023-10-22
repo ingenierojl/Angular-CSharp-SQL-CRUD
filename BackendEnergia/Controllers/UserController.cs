@@ -134,6 +134,37 @@ public IActionResult UpdateReporte(int id, Reporte updatedReporte)
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }   
+    // Controlador
+[HttpPut("delete/{id}")]
+public IActionResult DeleteReporte(int id, Reporte updatedReporte)
+{
+    
+    // Definir consulta SQL
+  string sql = "DELETE FROM danos_reportados WHERE id = @id";
+  var dbConnection = new DbConnection();
+  // Ejecutar consulta SQL
+  using (var connection = dbConnection.GetConnection())
+  {
+    //connection.Open();
+    
+    using (var command = new SqlCommand(sql, connection))
+    {
+      command.Parameters.AddWithValue("@id", id);
+      command.Parameters.AddWithValue("@titulo", updatedReporte.Titulo);
+      command.Parameters.AddWithValue("@desc", updatedReporte.Descripcion);
+      command.Parameters.AddWithValue("@fecha", updatedReporte.Fecha);
+      command.Parameters.AddWithValue("@estado", updatedReporte.Estado);
+
+      command.ExecuteNonQuery();
+    }
+  }
+
+  return Ok();
+}
+
+
+
+
 }
 
 public class LoginModel
