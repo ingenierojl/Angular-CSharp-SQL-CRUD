@@ -45,4 +45,41 @@ public class ReporteService
 
     return reportes; 
   }
+  public List<Reporte> GetUsr(string username)
+  {
+    // Definir consulta SQL
+    string sql = "SELECT role, password FROM dbo.usuarios WHERE username = @username";
+
+    List<Reporte> reportes = new List<Reporte>();
+
+    using (var connection = _dbConnection.GetConnection())
+    {
+        // La conexión ya viene abierta desde DbConnection
+
+        using (var command = new SqlCommand(sql, connection))
+        {
+            command.Parameters.AddWithValue("@username", username); // Agrega el parámetro
+
+            SqlDataReader reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Reporte reporte = new Reporte();
+                
+                reporte.Titulo = reader.GetString(0);
+                reporte.Descripcion = reader.GetString(1);
+
+                reportes.Add(reporte);
+                Console.WriteLine("Usuario recibido: " + username);
+
+            }
+
+            reader.Close();
+        }
+    }
+
+    return reportes;
+  }
+
+
 }

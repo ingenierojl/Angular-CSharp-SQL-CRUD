@@ -97,12 +97,20 @@ public IActionResult DeleteReporte(int id, Reporte updatedReporte)
     private bool IsValidUser(string username, string password)
     {   
         Console.WriteLine("Usuario recibido: " + username);
-            
-        // Realiza la validación de credenciales en tu base de datos o sistema de autenticación.
-        // Si las credenciales son válidas, devuelve true; de lo contrario, devuelve false.
-        // Este es un ejemplo simplificado.
-        return username == "test" && password == "1234";
+        var dbConnection = new DbConnection();
+        var service = new ReporteService(dbConnection);
+
+        var user = service.GetUsr(username).FirstOrDefault();
+
+    if (user == null) 
+    {
+    return false; 
     }
+
+    return user.Descripcion == password;
+    }
+
+
 
     private string GenerateToken(string username, string role)
     {
