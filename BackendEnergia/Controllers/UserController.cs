@@ -19,10 +19,13 @@ public class AuthController : ControllerBase
     {
         _configuration = configuration;
     }
-
+/*
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginModel model)
     {
+        
+        Console.WriteLine(model.Password);
+
         if (IsValidUser(model.Username, model.Password))
         {
             var token = GenerateToken(model.Username, model.Role);
@@ -31,6 +34,26 @@ public class AuthController : ControllerBase
 
         return Unauthorized();
     }
+
+*/
+
+[HttpPost("login")]
+public IActionResult Login([FromBody] LoginModel model)
+{
+    Console.WriteLine(model.Password);
+
+    var (isValid, userId) = IsValidUser(model.Username, model.Password);
+
+    if (isValid)
+    {
+        var token = GenerateToken(model.Username, model.Role, userId);
+
+        return Ok(new { IsValid = true, UserId = userId, Token = token });
+    }
+
+    return Unauthorized(new { IsValid = false, UserId = -1 });
+}
+
 
     [HttpPost("crear-danos")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "administrador")]
@@ -93,25 +116,49 @@ public IActionResult DeleteReporte(int id, Reporte updatedReporte)
   return Ok();
 }
 
-
+/*
     private bool IsValidUser(string username, string password)
     {   
         Console.WriteLine("Usuario recibido: " + username);
+        
+        
         var dbConnection = new DbConnection();
         var service = new ReporteService(dbConnection);
 
         var user = service.GetUsr(username).FirstOrDefault();
+        
 
     if (user == null) 
     {
     return false; 
     }
+    Console.WriteLine(user.Id);
 
     return user.Descripcion == password;
     }
 
+*/
 
+private (bool IsValid, int UserId) IsValidUser(string username, string password)
+{   
+    Console.WriteLine("Usuario recibido: " + username);
 
+    var dbConnection = new DbConnection();
+    var service = new ReporteService(dbConnection);
+
+    var user = service.GetUsr(username).FirstOrDefault();
+
+    if (user == null) 
+    {
+        return (false, -1); // Devuelve un valor predeterminado para el UserId en caso de usuario no válido
+    }
+
+    Console.WriteLine(user.Id);
+
+    return (user.Descripcion == password, user.Id);
+}
+
+/*
     private string GenerateToken(string username, string role)
     {
         var secretKey = _configuration["Jwt:SecretKey"];  
@@ -143,12 +190,47 @@ public IActionResult DeleteReporte(int id, Reporte updatedReporte)
         return new JwtSecurityTokenHandler().WriteToken(token);
     }   
 
+*/
+
+private string GenerateToken(string username, string role, int userId)
+{
+    var secretKey = _configuration["Jwt:SecretKey"];
+    var audience = _configuration["Jwt:Audience"];
+    var issuer = _configuration["Jwt:Issuer"];
+
+    if (secretKey is null)
+    {
+        throw new InvalidOperationException("La clave secreta JWT no está configurada.");
+    }
+
+    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+    var claims = new[]
+    {
+        new Claim(ClaimTypes.Name, username),
+        new Claim(ClaimTypes.Role, role),
+        new Claim("UserId", userId.ToString()) // Agregar el ID del usuario como un claim personalizado
+    };
+
+    var token = new JwtSecurityToken(
+        issuer: issuer,
+        audience: audience,
+        claims: claims,
+        expires: DateTime.Now.AddHours(1),
+        signingCredentials: credentials
+    );
+
+    return new JwtSecurityTokenHandler().WriteToken(token);
+}
+
 
 
 }
 
 public class LoginModel
 {
+    public Int32 Id { get; set; }
     public string Username { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
     public string Role { get; set; } = string.Empty;
