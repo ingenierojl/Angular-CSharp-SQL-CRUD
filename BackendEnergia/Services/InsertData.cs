@@ -23,7 +23,7 @@ public class InsertData
                 command.Parameters.AddWithValue("@descripcion", danoData.Descripcion);
                 command.Parameters.AddWithValue("@fecha", danoData.Fecha);
                 command.Parameters.AddWithValue("@estado", danoData.Estado);
-                command.Parameters.AddWithValue("@usuario_id", 1);
+                command.Parameters.AddWithValue("@usuario_id", danoData.Id);
 
                 int rowsAffected = command.ExecuteNonQuery();
                 

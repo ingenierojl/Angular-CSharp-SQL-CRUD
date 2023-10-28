@@ -44,6 +44,8 @@ public IActionResult Login([FromBody] LoginModel model)
 
     var (isValid, userId) = IsValidUser(model.Username, model.Password);
 
+    Console.WriteLine("Llega Id de IS Valid se va a Generate"+userId);
+
     if (isValid)
     {
         var token = GenerateToken(model.Username, model.Role, userId);
@@ -54,7 +56,7 @@ public IActionResult Login([FromBody] LoginModel model)
     return Unauthorized(new { IsValid = false, UserId = -1 });
 }
 
-
+/*
     [HttpPost("crear-danos")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "administrador")]
     public IActionResult CrearDanos([FromBody] DanoModel danoData)
@@ -65,17 +67,72 @@ public IActionResult Login([FromBody] LoginModel model)
     Console.WriteLine($"Descripción: {danoData.Descripcion}");
     Console.WriteLine($"Fecha: {danoData.Fecha}");
     Console.WriteLine($"Estado: {danoData.Estado}");
-
-    
-    var dbConnection = new DbConnection();
-    
-    var dataInserter = new InsertData(dbConnection);
-
-   
+    var token = Request.Headers["Authorization"].ToString();    
+    var dbConnection = new DbConnection();    
+    var dataInserter = new InsertData(dbConnection);   
     dataInserter.InsertDamageReport(danoData);
      
         return new JsonResult(new { message = "Daño creado exitosamente" });
     }
+
+          */
+
+    [HttpPost("crear-danos")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "administrador")]
+public IActionResult CrearDanos([FromBody] DanoModel danoData)
+{
+    try
+    {
+        Console.WriteLine("Usuario accedió a la ruta 'Crear-Daños'");
+        Console.WriteLine("Datos recibidos:");
+        Console.WriteLine($"Título: {danoData.Titulo}");
+        Console.WriteLine($"Descripción: {danoData.Descripcion}");
+        Console.WriteLine($"Fecha: {danoData.Fecha}");
+        Console.WriteLine($"Estado: {danoData.Estado}");
+
+        // Obtiene el token de la cabecera de la solicitud
+        var token = Request.Headers["Authorization"].ToString();
+
+        // Separa el token del encabezado "Bearer" si es necesario
+        if (token.StartsWith("Bearer "))
+        {
+            token = token.Substring(7); // Elimina "Bearer " del token
+        }
+
+        // Decodifica el token JWT
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwtToken = tokenHandler.ReadJwtToken(token);
+
+        // Accede al valor "id" en el cuerpo del token
+        var idClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "UserId");
+
+        if (idClaim != null)
+        {
+            var idValue = idClaim.Value;
+            Console.WriteLine("Id>>>>>"+idValue);
+            // Agrega el valor "id" al modelo DanoData
+            danoData.Id = idValue;
+            Console.WriteLine("Id adicionado a danoData.ID "+danoData.Id);
+
+            // Continúa con la inserción de datos en la base de datos, etc.
+            var dbConnection = new DbConnection();
+            var dataInserter = new InsertData(dbConnection);
+            dataInserter.InsertDamageReport(danoData);
+
+            return new JsonResult(new { message = "Daño creado exitosamente" });
+        }
+        else
+        {
+            return new JsonResult(new { message = "Token no contiene la reclamación 'id'" });
+        }
+    }
+    catch (Exception ex)
+    {
+        // Maneja cualquier excepción que pueda ocurrir, como problemas de autorización, decodificación de token, etc.
+        return new JsonResult(new { error = ex.Message });
+    }
+}
+
 
     [HttpGet("listar-danos")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "administrador")]
@@ -153,7 +210,7 @@ private (bool IsValid, int UserId) IsValidUser(string username, string password)
         return (false, -1); // Devuelve un valor predeterminado para el UserId en caso de usuario no válido
     }
 
-    Console.WriteLine(user.Id);
+    Console.WriteLine("Id en controller is Valid retorna"+user.Id);
 
     return (user.Descripcion == password, user.Id);
 }
@@ -208,9 +265,9 @@ private string GenerateToken(string username, string role, int userId)
 
     var claims = new[]
     {
+        new Claim("UserId", userId.ToString()), // Agregar el ID del usuario como un claim personalizado
         new Claim(ClaimTypes.Name, username),
         new Claim(ClaimTypes.Role, role),
-        new Claim("UserId", userId.ToString()) // Agregar el ID del usuario como un claim personalizado
     };
 
     var token = new JwtSecurityToken(
@@ -238,6 +295,7 @@ public class LoginModel
 
 public class DanoModel
 {
+    public string Id { get; set; } = string.Empty;
     public string Titulo { get; set; } = string.Empty;
     public string Descripcion { get; set; } = string.Empty;
     public DateTime? Fecha { get; set; } = null; 
