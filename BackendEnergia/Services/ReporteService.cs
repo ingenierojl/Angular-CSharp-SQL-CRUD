@@ -48,7 +48,7 @@ public class ReporteService
   public List<Reporte> GetUsr(string username)
   {
     // Definir consulta SQL
-    string sql = "SELECT role, password FROM dbo.usuarios WHERE username = @username";
+    string sql = "SELECT id, role, password FROM dbo.usuarios WHERE username = @username";
 
     List<Reporte> reportes = new List<Reporte>();
 
@@ -65,12 +65,13 @@ public class ReporteService
             while (reader.Read())
             {
                 Reporte reporte = new Reporte();
-                
-                reporte.Titulo = reader.GetString(0);
-                reporte.Descripcion = reader.GetString(1);
-
+                reporte.Id= (int)reader.GetSqlInt32(0);
+                reporte.Titulo = reader.GetString(1);
+                reporte.Descripcion = reader.GetString(2);
                 reportes.Add(reporte);
                 Console.WriteLine("Usuario recibido: " + username);
+                Console.WriteLine("ID recibido: " + reporte.Id);
+                Console.WriteLine("clv recibido: " + reporte.Descripcion);
 
             }
 
@@ -81,5 +82,5 @@ public class ReporteService
     return reportes;
   }
 
-
+   
 }
